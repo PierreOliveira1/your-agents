@@ -1,8 +1,30 @@
 # Multi-Agent Workspace
 
-Sistema de coordenação multiagente para **Claude Code** e **Codex CLI**.
+Sistema de coordenacao multiagente para **Claude Code** e **Codex CLI**, orquestrado visualmente pelo [**Maestri**](https://www.themaestri.app/pt-br).
 
 Um orquestrador central delega trabalho para agentes especializados, coordena paralelismo, garante rastreabilidade e impede que agentes se percam em contexto ou alterem areas erradas.
+
+---
+
+## Maestri — a interface de orquestracao
+
+Este workspace usa o [Maestri](https://www.themaestri.app/pt-br) como camada de orquestracao visual. Maestri e um app de terminal para macOS que funciona como um canvas infinito onde multiplos agentes de IA rodam simultaneamente.
+
+### Por que Maestri
+
+Em vez de alternar entre abas de terminal, voce coloca cada agente (Claude Code, Codex, shell comum) em um ponto do canvas e ve todos ao mesmo tempo. A comunicacao entre eles e direta: um agente pode delegar tarefas, fazer perguntas ou passar trabalho para outro sem voce precisar copiar e colar entre janelas.
+
+### Como funciona na pratica
+
+- **Terminais no canvas** — cada terminal roda seu proprio agente. Voce posiciona livremente no espaco.
+- **Conexao entre terminais** — conecte dois terminais e os agentes se comunicam direto. O orquestrador delega para agentes de dominio, que devolvem resultado, tudo visivel no canvas.
+- **Sticky notes** — notes conectados a terminais que o agente escreve automaticamente. Atualizacoes de progresso, resumos, decisoes — tudo capturado sem intervencao manual. E onde os PLAN, TODOS e DAILY deste sistema vivem na pratica.
+- **Papeis de agentes** — voce atribui papeis reutilizaveis (orquestrador, dominio, reviewer, arquiteto) que persistem entre sessoes.
+- **Desenho no canvas** — diagramas de arquitetura e fluxos direto no espaco de trabalho, uteis para alinhar contexto visual entre frentes.
+
+### Privacidade
+
+Todos os dados ficam localmente no Mac. Sem telemetria, sem conta, sem cloud.
 
 ---
 
