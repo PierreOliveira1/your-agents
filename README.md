@@ -38,7 +38,12 @@ Copie tambem os markdowns de especificacao dos agentes (`orquestrador.md`, `agen
 
 ### 2. Configure o AGENT_REGISTRY.md
 
-Antes de qualquer delegacao, crie um `AGENT_REGISTRY.md` na raiz do projeto com os agentes reais do seu contexto. Use o template deste repositorio como base e preencha com nomes, tipos, projetos e notes reais.
+Antes de qualquer delegacao, crie um `AGENT_REGISTRY.md` com os agentes reais do seu contexto. Use o template deste repositorio como base e preencha com nomes, tipos, projetos e notes reais.
+
+**Onde colocar:**
+
+- **Com Maestri** — coloque dentro de `.maestri/roles/` do projeto. O Maestri le os papeis dessa pasta automaticamente.
+- **Sem Maestri** — coloque na raiz do projeto onde a IA esta rodando.
 
 ### 3. Crie os notes das frentes
 
