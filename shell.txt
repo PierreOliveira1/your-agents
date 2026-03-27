@@ -1,0 +1,7 @@
+codex-free() {
+  command codex --config approval_policy='"never"' --config sandbox_mode='"danger-full-access"' "$@"
+}
+
+claude-free() {
+  command claude --dangerously-skip-permissions "$@"
+}

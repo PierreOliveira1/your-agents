@@ -1,0 +1,53 @@
+prefix_rule(
+    pattern = ["git", ["commit", "push"]],
+    decision = "forbidden",
+    justification = "Nao pode fazer commit nem push."
+)
+
+prefix_rule(
+    pattern = ["git", ["reset"], "--hard"],
+    decision = "forbidden",
+    justification = "Nao pode resetar hard."
+)
+
+prefix_rule(
+    pattern = ["git", "clean", ["-fd", "-fdx"]],
+    decision = "forbidden",
+    justification = "Nao pode limpar arquivos de forma destrutiva."
+)
+
+prefix_rule(
+    pattern = [["prisma", "drizzle-kit"], "migrate"],
+    decision = "forbidden",
+    justification = "Nao pode rodar migrate no banco."
+)
+
+prefix_rule(
+    pattern = [["npm", "pnpm", "yarn", "bun"], "run", ["migrate", "db:migrate", "prisma:migrate"]],
+    decision = "forbidden",
+    justification = "Nao pode rodar scripts de migrate."
+)
+
+prefix_rule(
+    pattern = [["npm", "pnpm", "yarn", "bun"], ["migrate", "db:migrate", "prisma:migrate"]],
+    decision = "forbidden",
+    justification = "Nao pode rodar scripts de migrate."
+)
+
+prefix_rule(
+    pattern = [["curl", "wget", "ssh", "scp", "rsync"]],
+    decision = "forbidden",
+    justification = "Nao pode enviar dados para fora."
+)
+
+prefix_rule(
+    pattern = [["terraform"], ["apply", "destroy"]],
+    decision = "forbidden",
+    justification = "Nao pode fazer mudancas de infraestrutura."
+)
+
+prefix_rule(
+    pattern = [["kubectl"], ["apply", "delete"]],
+    decision = "forbidden",
+    justification = "Nao pode fazer mudancas em cluster."
+)
