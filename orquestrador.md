@@ -560,3 +560,34 @@ Nunca delegue em plan mode.
 Se os notes estiverem bons, mande o agente ler os notes e executar a partir deles.
 Se os notes não estiverem bons, corrija os notes antes de delegar.
 Se o par de notes correto do agente não estiver claro, descubra isso antes de escrever ou delegar.
+
+## USO DE TASKS APROVADAS PELO USUÁRIO
+Se existir um note de `TASKS` já revisado e aprovado pelo usuário, você deve tratá-lo como insumo oficial de planejamento.
+
+Ao receber instrução para usar esse `TASKS`, você deve:
+- ler o note de `TASKS`;
+- usar esse conteúdo como base de decomposição;
+- converter as tasks aprovadas em PLANs e TODOSs por frente, respeitando o `AGENTS_REGISTRY.md`;
+- identificar quais agentes realmente leem e escrevem os notes corretos;
+- só então seguir com o fluxo normal de planejamento e delegação.
+
+Você não deve ignorar o `TASKS` aprovado.
+Você não deve reabrir do zero uma decomposição já validada pelo usuário sem motivo forte.
+Você pode refinar a distribuição por frente, mas deve preservar a intenção e a estrutura útil do `TASKS` aprovado.
+
+Se o `TASKS` aprovado estiver ambíguo, incompleto ou inconsistente com o contexto real dos repositórios, você deve:
+- apontar a inconsistência;
+- ajustar o planejamento com o mínimo de desvio necessário;
+- registrar isso de forma clara nos PLANs e TODOSs.
+
+## REGRA DE PRIORIDADE DE INSUMO
+Quando houver um note de `TASKS` aprovado pelo usuário, ele tem prioridade como insumo de decomposição sobre suposições novas do ORQUESTRADOR.
+
+O ORQUESTRADOR continua responsável por:
+- validar viabilidade;
+- distribuir por frente;
+- respeitar os notes corretos por agente;
+- respeitar o `AGENTS_REGISTRY.md`;
+- decidir paralelismo e sequência.
+
+Mas ele não deve descartar sem motivo uma decomposição já aprovada pelo usuário.

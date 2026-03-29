@@ -52,21 +52,48 @@ Para cada frente de trabalho, crie notes de:
 - **TODOS** — tarefas executaveis, verificaveis, com checkpoints
 - **DAILY** (opcional) — registro consolidado de andamento, uso exclusivo do orquestrador
 
-### 4. Inicie pela demanda ao orquestrador
+### 4. Inicie pela demanda ao Task Planner ou ao orquestrador
 
-Passe a demanda ao orquestrador. Ele analisa, le o `AGENT_REGISTRY.md`, decide quais frentes e agentes precisam atuar, prepara os notes e delega. Voce nao precisa micro-gerenciar a distribuicao.
+**Fluxo recomendado (com Task Planner):** passe a demanda ao Task Planner para que ele decomponha em `TASKS`, revise o resultado e entao passe ao orquestrador com o `TASKS` aprovado. Veja o fluxo completo na secao abaixo.
+
+**Fluxo direto:** se a demanda for simples e nao exigir decomposicao previa, passe diretamente ao orquestrador. Ele analisa, le o `AGENT_REGISTRY.md`, prepara os notes e delega.
 
 ---
 
 ## Agentes
 
+### Task Planner
+
+Agente de decomposicao. Recebe a demanda, le os repositorios relevantes e escreve o note de `TASKS` detalhado — pronto para revisao humana antes de qualquer execucao.
+
+**Faz:**
+- entende o caso de uso e analisa os repositorios relevantes
+- identifica quantas tasks sao necessarias
+- quebra a demanda em tasks especificas, operacionais e verificaveis
+- detalha como cada task deve ser feita, incluindo arquivos, modulos, fluxos e contratos provaveis
+- registra dependencias, paralelismo, riscos e criterios de aceite
+- escreve tudo no note de `TASKS`
+
+**Nao faz:**
+- implementar codigo
+- distribuir trabalho para agentes
+- alterar PLAN, TODOS ou DAILY
+- renomear o note de TASKS
+- criar tasks genericas sem olhar o contexto real dos repositorios
+
+Especificacao completa: [`task-planner.md`](task-planner.md)
+
+---
+
 ### Orquestrador
 
-O cerebro do sistema. Recebe a demanda, analisa contexto, decide quais frentes precisam atuar e coordena tudo.
+O cerebro do sistema. Recebe a demanda (ou o `TASKS` aprovado), analisa contexto, decide quais frentes precisam atuar e coordena tudo.
 
 **Faz:**
 - analisa demanda, arquitetura, dependencias, riscos e impacto
 - le o `AGENT_REGISTRY.md` antes de qualquer delegacao
+- usa o note de `TASKS` aprovado como insumo prioritario de decomposicao
+- converte tasks aprovadas em PLAN e TODOS por frente
 - decide o que roda em paralelo e o que e sequencial
 - prepara e atualiza PLAN, TODOS e DAILY
 - delega para agentes de dominio
@@ -76,6 +103,13 @@ O cerebro do sistema. Recebe a demanda, analisa contexto, decide quais frentes p
 **Nao faz:**
 - implementar codigo (exceto ausencia total de agente compativel)
 - delegar em plan mode (plan mode e apenas para planejar)
+- alterar titulos de notes em qualquer circunstancia
+- descartar sem motivo um `TASKS` ja aprovado pelo usuario
+
+**Regras adicionais de destaque:**
+- **Imutabilidade de titulos** — titulos dos notes sao identificadores fixos do sistema. O orquestrador nao pode renomear, abreviar, traduzir, ajustar capitalicao, adicionar prefixo/sufixo ou recriar um note com outro titulo, em nenhuma circunstancia.
+- **Prioridade do TASKS aprovado** — quando existe um note de `TASKS` revisado e aprovado pelo usuario, ele tem prioridade como insumo de decomposicao. O orquestrador pode refinar a distribuicao por frente mas deve preservar a intencao e a estrutura aprovada.
+- **Compatibilidade agente-notes** — antes de qualquer delegacao, o orquestrador verifica no `AGENTS_REGISTRY.md` quais notes cada agente realmente le e escreve. Nao e possivel delegar para um agente usando notes que ele nao acessa.
 
 Especificacao completa: [`orquestrador.md`](orquestrador.md)
 
@@ -244,6 +278,7 @@ Ao usar esses aliases, **todas as protecoes de seguranca sao desabilitadas**:
 │   ├── AGENTS.md              # Regras de seguranca para Codex CLI
 │   └── default.rules          # Regras programaticas do Codex
 ├── AGENT_REGISTRY.md          # Template de registro de agentes
+├── task-planner.md            # Especificacao do agente task planner
 ├── orquestrador.md            # Especificacao do orquestrador
 ├── agente-dominio.md          # Especificacao do agente de dominio
 ├── code-review.md             # Especificacao do code review
@@ -255,7 +290,58 @@ Ao usar esses aliases, **todas as protecoes de seguranca sao desabilitadas**:
 
 ---
 
+## Fluxo ideal com Task Planner
+
+O fluxo recomendado para demandas que exigem decomposicao previa:
+
+```
+1. Voce chama o Task Planner
+   │
+   ▼
+2. Task Planner le a demanda e os repositorios
+   │
+   ▼
+3. Task Planner escreve o note de TASKS
+   │
+   ▼
+4. Voce revisa o TASKS
+   │
+   ├── Ajustes? ──▶ volta ao Task Planner
+   │
+   ▼
+5. Voce chama o Orquestrador com o TASKS aprovado
+   │
+   ▼
+6. Orquestrador le o TASKS aprovado
+   │
+   ▼
+7. Orquestrador converte em PLAN e TODOS por frente
+   ├── Le AGENT_REGISTRY.md
+   ├── Identifica agentes e notes corretos por frente
+   ├── Decide paralelo vs sequencial
+   │
+   ▼
+8. Orquestrador delega para os agentes corretos
+   │
+   ├──▶ Agente de Dominio A (paralelo)
+   ├──▶ Agente de Dominio B (paralelo)
+   │
+   ├── Checkpoint de sincronizacao
+   │
+   ├──▶ Code Review (se necessario)
+   ├──▶ Arquiteto (se necessario)
+   ├──▶ Validador de Integracao (se necessario)
+   │
+   ├── Correcoes pontuais (se pedidas)
+   │
+   └── Consolidacao final
+```
+
+---
+
 ## Fluxo tipico de uma demanda
+
+Fluxo direto quando a demanda nao exige decomposicao previa:
 
 ```
 Demanda
